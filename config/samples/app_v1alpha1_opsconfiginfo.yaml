@@ -1,0 +1,12 @@
+apiVersion: app.ops.cloud.alipay.com/v1alpha1
+kind: OpsConfigInfo
+metadata:
+  labels:
+    app.kubernetes.io/name: opsconfiginfo
+    app.kubernetes.io/instance: opsconfiginfo-sample
+    app.kubernetes.io/part-of: altershieldoperator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: altershieldoperator
+  name: opsconfiginfo-sample
+spec:
+  # TODO(user): Add fields here

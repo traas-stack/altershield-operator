@@ -1,0 +1,23 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: altershieldoperator-mutating-webhook
+  labels:
+    control-plane: controller-manager
+webhooks:
+  - name: altershieldoperator-mutating.antgroup.com
+    clientConfig:
+      service:
+        name: altershieldoperator-webhook-svc
+        namespace: altershieldoperator-system
+        path: "/deployment-mutate"
+      caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUM1ekNDQWMrZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJek1EUXdOekE1TXprMU0xb1hEVE16TURRd05EQTVNemsxTTFvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBSnRLClRKRXFSNXFhRitPWm5ST1BIclAwa2pBblVyYnVPY3oyc296Ykc3VTd4NCtLUlhDUFBYbmsxOTdQcVdKT1IwSTQKaUJ4VFhCa3Z3UWNJdktWYzVuYkJWdE9DVmRVTnk2Z2pmNm00US80OFBNYVZnSVNxUk9NQ2JOb0pYNXJMZmpPcwpZQ1FxUUxxdEwzeHhWZXRrcTRYSXJlQWE1MVBJZFVGci80YzFSVWhiWXF6WXU4VHVmdlJyNTZlSnpqTEd6N3RrClhUVklmeHNmU0FBb01yRUthWXF6enY4NlYrdEYvLyt5azc3WjNkbFM0eG51RTRmSFd3ZDRwSHRseDcrRzlSVUUKU3RLcXNsandQU3RURk91M1ZVbGJBRGpkempUS21YclA1N0VXN1o0dUx1UFNlMDVRWmI2K3FCNk41Z1NOdThmaAptU25DQjcvNm9NOVVpL1V5YzNFQ0F3RUFBYU5DTUVBd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZBcDVRbXo2UEN6S0tnWmhpZEh5bmtVRjB2RGJNQTBHQ1NxR1NJYjMKRFFFQkN3VUFBNElCQVFBeE9kMzd1bW9DaXFlQ2c4T2Vwd0RSY0oxZmJ1dnF3R1dXUUpDa054ZXRDNTlMMWRqdwpJZEt2Wm84SzlqbE1PNC9GYXRaa3p0ZEVwRndOQ3REUkVURWRJWmVOaFg2YzUyMExXeVI2VDk2bGk4K2N5clNZCkFSTTlxZzZ1YkM0U282dGxaVS9jei9neEVkYUNzaGhsN3Z5bGNiTFRnMTdQejk3amt6dE5YUUtwemMyb0RzWk8KMlhjZlF5ZnBFRU9TUGxCc2J1b1R1QXhEbXRXT1lDRmp2RVVkcUdlcmhlQWsvRzRBUjdsMUhHZzNUK1dPMXoxZAozSG9rZER0YTZDeUVRL2Zmd2g1bWEyQnhGN041SzQrckNGVW1iU0s1cnA3ejBYek5yR2hNZHN4aGJCaHc3ZStuCkZLK0x4amtmVVphdDZ3dDU4VHJqQkJQOGRGbllWQ2VJSFdFRQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+    rules:
+      - operations: [ "CREATE", "UPDATE" ]
+        apiGroups: ["apps", ""]
+        apiVersions: ["v1"]
+        resources: ["deployments"]
+    namespaceSelector:
+      matchLabels:
+        admission-webhook-example: enabled
+

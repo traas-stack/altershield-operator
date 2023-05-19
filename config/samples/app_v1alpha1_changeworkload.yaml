@@ -1,0 +1,12 @@
+apiVersion: app.ops.cloud.alipay.com/v1alpha1
+kind: ChangeWorkload
+metadata:
+  labels:
+    app.kubernetes.io/name: changeworkload
+    app.kubernetes.io/instance: changeworkload-sample
+    app.kubernetes.io/part-of: altershieldoperator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: altershieldoperator
+  name: changeworkload-sample
+spec:
+  # TODO(user): Add fields here

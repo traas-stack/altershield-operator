@@ -1,0 +1,23 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: altershieldoperator-mutating-webhook
+  labels:
+    control-plane: controller-manager
+webhooks:
+  - name: altershieldoperator-mutating.antgroup.com
+    clientConfig:
+      service:
+        name: altershieldoperator-webhook-svc
+        namespace: altershieldoperator-system
+        path: "/deployment-mutate"
+      caBundle: ${CA_BUNDLE}
+    rules:
+      - operations: [ "CREATE", "UPDATE" ]
+        apiGroups: ["apps", ""]
+        apiVersions: ["v1"]
+        resources: ["deployments"]
+    namespaceSelector:
+      matchLabels:
+        admission-webhook-example: enabled
+

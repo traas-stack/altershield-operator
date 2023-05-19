@@ -1,0 +1,13 @@
+name: golangci-lint
+
+on: [push,pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install golangci-lint
+        run: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.52.2
+      - name: Run golangci-lint
+        run: /home/runner/go/bin/golangci-lint run -v --skip-dirs bin --timeout 5m

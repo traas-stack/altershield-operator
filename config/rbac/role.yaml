@@ -1,0 +1,125 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: manager-role
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changepods
+  verbs:
+  - create
+  - delete
+  - deletecollection
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changepods/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changepods/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changeworkloads
+  verbs:
+  - create
+  - delete
+  - deletecollection
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changeworkloads/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changeworkloads/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - opsconfiginfoes
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - opsconfiginfoes/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - opsconfiginfoes/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apps
+  resources:
+  - replicasets
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch

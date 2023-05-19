@@ -1,0 +1,22 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: altershieldoperator-validation-webhook
+  labels:
+    control-plane: controller-manager
+webhooks:
+  - name: altershieldoperator-validation.antgroup.com
+    clientConfig:
+      service:
+        name: altershieldoperator-webhook-svc
+        namespace: altershieldoperator-system
+        path: "/deployment-validate"
+      caBundle: ${CA_BUNDLE}
+    rules:
+      - operations: [ "CREATE", "UPDATE" ]
+        apiGroups: ["apps", ""]
+        apiVersions: ["v1"]
+        resources: ["deployments"]
+    namespaceSelector:
+      matchLabels:
+        admission-webhook-example: enabled
