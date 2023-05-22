@@ -122,7 +122,9 @@ func (r *PodReconciler) markAsFinished(ctx context.Context, pod *v1.Pod) (err er
 	pod.Labels[utils.OperateFinishedLabel] = strconv.Itoa(int(time.Now().Unix()))
 	logger.Info("pod finished", utils.LogPodResource, utils.GetResource(pod))
 	if err = r.Update(ctx, pod); err != nil {
-		logger.Error(err, "update pod mark as finished label failed", utils.LogPodResource, utils.GetResource(pod))
+		if utils.IsObjectModifiedErr(err) {
+			logger.Error(err, "update pod mark as finished label failed", utils.LogPodResource, utils.GetResource(pod))
+		}
 		return err
 	}
 	return

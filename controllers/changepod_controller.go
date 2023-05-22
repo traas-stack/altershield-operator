@@ -200,7 +200,9 @@ func (r *ChangePodReconciler) executeInitChangePodHandle(ctx context.Context, ch
 
 		// update changePod
 		if err := r.Update(ctx, changePod); err != nil {
-			logger.Error(err, "update changePod error", utils.LogChangePodResource, utils.GetResource(changePod))
+			if !utils.IsObjectModifiedErr(err) {
+				logger.Error(err, "update changePod error", utils.LogChangePodResource, utils.GetResource(changePod))
+			}
 			return ctrl.Result{}, err
 		}
 
@@ -295,7 +297,9 @@ func (r *ChangePodReconciler) handleFinishedChangePod(ctx context.Context, chang
 func (r *ChangePodReconciler) updateChangePodStatus(ctx context.Context, changePod *v1alpha1.ChangePod) error {
 	if err := r.Status().Update(ctx, changePod); err != nil {
 		logger := log.FromContext(ctx).WithName("updateChangePodStatus")
-		logger.Error(err, "update changePod status failed", utils.LogChangePodResource, utils.GetResource(changePod))
+		if utils.IsObjectModifiedErr(err) {
+			logger.Error(err, "update changePod status failed", utils.LogChangePodResource, utils.GetResource(changePod))
+		}
 		return err
 	}
 	return nil

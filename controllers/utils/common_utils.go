@@ -220,3 +220,9 @@ func IsPodSummarySliceEqual(a, b []v1alpha1.PodSummary) bool {
 
 	return true
 }
+
+// IsObjectModifiedErr 判断是否为对象已被修改的错误
+// IsObjectModifiedErr determine whether it is an error that the object has been modified
+func IsObjectModifiedErr(err error) bool {
+	return strings.Contains(err.Error(), "the object has been modified; please apply your changes to the latest version and try again")
+}

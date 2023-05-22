@@ -335,7 +335,9 @@ func (r *ChangeWorkloadReconciler) updateWorkloadStatus(ctx context.Context, wor
 	workload.Status.UpdateTime = utils.GetNowTime()
 	workload.Status.UpdateTimeUnix = time.Now().Unix()
 	if err := r.Status().Update(ctx, workload); err != nil {
-		logger.Error(err, "update workload status error", utils.LogChangeWorkloadResource, utils.GetResource(workload))
+		if !utils.IsObjectModifiedErr(err) {
+			logger.Error(err, "update workload status error", utils.LogChangeWorkloadResource, utils.GetResource(workload))
+		}
 		return err
 	}
 	return nil
@@ -355,7 +357,9 @@ func (r *ChangeWorkloadReconciler) addOrRemoveDeploymentSuspendLabel(ctx context
 		if _, ok := deployment.Labels[utils.SuspendLabel]; !ok {
 			return nil
 		}
+		deployment.Labels[utils.IgnoredSuspendLabel] = utils.True
 		delete(deployment.Labels, utils.SuspendLabel)
+		delete(deployment.Labels, utils.DefenseStatusLabel)
 	}
 	if err := r.Patch(ctx, deployment, patch); err != nil {
 		logger.Error(err, "add or remove deployment suspend label error", utils.LogDeploymentResource, utils.GetResource(deployment))
@@ -534,10 +538,10 @@ func (r *ChangeWorkloadReconciler) validateChangeWorkloadSuccessOrSuspend(ctx co
 	if isPodFail {
 		workload.Status.Status = v1alpha1.Suspend
 	}
-	if err := r.updateWorkloadStatus(ctx, workload); err != nil {
+	if err := r.addOrRemoveDeploymentSuspendLabel(ctx, deployment, isPodFail); err != nil {
 		return err
 	}
-	if err := r.addOrRemoveDeploymentSuspendLabel(ctx, deployment, isPodFail); err != nil {
+	if err := r.updateWorkloadStatus(ctx, workload); err != nil {
 		return err
 	}
 	return nil
