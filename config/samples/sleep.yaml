@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sleep
+  labels:
+    app: sleep
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: sleep
+  template:
+    metadata:
+      labels:
+        app: sleep
+        test: "123"
+    spec:
+      containers:
+      - name: sleep
+        image: busybox
+        command: ["/bin/sleep","infinity"]
+        imagePullPolicy: IfNotPresent
