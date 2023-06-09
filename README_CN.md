@@ -2,7 +2,7 @@
 ## 简介
 Operator的定位是作为AlterShield在云原生领域变更的感知并扩充整个变更防控的服务领域，我们的目标是打造一个通用的[Kubernetes Custom Resource][CRD]防控框架。
 
-AlterShield Operator是一款基于[Operator-SKD][Operator-SKD]开发的Kubernetes Operator，旨在通过对Workload资源的管控，提高Kubernetes集群的稳定性和可靠性。
+AlterShield Operator是一款基于[Operator-SDK][Operator-SDK]开发的Kubernetes Operator，旨在通过对Workload资源的管控，提高Kubernetes集群的稳定性和可靠性。
 这样AlterShield不仅适用于传统的SOA架构，同时也能很好的支持云原生化的微服务系统设计。
 
 你也可以脱离[AlterShield][AlterShield]主端，独立的快速部署operator到你的Kubernetes集群中，当前已经实现对[Deployment][Deployment]变更的感知，
@@ -17,7 +17,7 @@ Workload 是 Kubernetes 中一种管理应用程序部署的抽象层。它可�
 
 生命周期如下：
 
-![img.png](docs/img.png)
+![img.png](docs/lifecycle.png)
 
 基本思路是通过Kubernetes的Api Server的[WebHook][WebHook]能力感知CRD的更新，
 对WorkLoad的更新操作我们通常定义成一种变更，而最小变更单元对应于Kubernetes最小调度单元Pod。这套设计理念和AlterShield定义的变更信息模型也是相呼应的。
@@ -54,7 +54,7 @@ AlterShield Operator当前具备的功能：
 [Change Pod]:https://github.com/traas-stack/altershield-operator/blob/main/apis/app.ops.cloud.alipay.com/v1alpha1/changepod_types.go
 [ChangeModel]:https://traas-stack.github.io/altershield-docs/zh-CN/open-change-management-specification/change-model/
 [Pod]:https://kubernetes.io/docs/concepts/workloads/pods/
-[Operator-SKD]:https://sdk.operatorframework.io/
+[Operator-SDK]:https://sdk.operatorframework.io/
 [CRD]:https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/
 [Deployment]:https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
 [WebHook]:https://kubernetes.io/docs/reference/access-authn-authz/

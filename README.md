@@ -2,7 +2,7 @@
 ## Introduction
 The positioning of Operator is to serve as a perception and expansion of AlterShield in the cloud-native field of change, and our goal is to create a universal [Kubernetes Custom Resource (CRD)][CRD] control framework for change prevention.
 
-AlterShield Operator is a Kubernetes Operator developed based on [Operator-SKD][Operator-SKD], aimed at improving the stability and reliability of Kubernetes clusters through control of Workload resources. This makes AlterShield not only suitable for traditional SOA architecture but also well-suited for cloud-native microservice system design.
+AlterShield Operator is a Kubernetes Operator developed based on [Operator-SDK][Operator-SKD], aimed at improving the stability and reliability of Kubernetes clusters through control of Workload resources. This makes AlterShield not only suitable for traditional SOA architecture but also well-suited for cloud-native microservice system design.
 
 You can also deploy Operator independently from the main [AlterShield][AlterShield] product, quickly deploying it to your Kubernetes cluster. Currently, Operator has achieved awareness of changes to Deployments, change prevention, change interception, change self-healing, and rollback. 
 More Workload controls and additional release methods are under development.
@@ -14,7 +14,7 @@ In robotics and automation, a control loop is a non-terminating loop that regula
 
 The lifecycle is as follows:
 
-![img.png](docs/img.png)
+![img.png](docs/lifecycle.png)
 
 The basic idea is to use the [WebHook][WebHook] capability of the Kubernetes API server to detect updates to CRDs. We typically define updates to WorkLoads as a type of change, with the minimum unit of change corresponding to the minimum scheduling unit of Kubernetes, which is the Pod. This design philosophy is consistent with the change information model defined by AlterShield. Through CRDs, we can declaratively describe and define changes, and the Operator internally implements the go language version of the AlterShield client, which accesses AlterShield according to the standard [change information model][ChangeModel].
 
@@ -76,7 +76,7 @@ Distributed under the Apache2.0 License. See `LICENSE` for more information.
 [Change Pod]:https://github.com/traas-stack/altershield-operator/blob/main/apis/app.ops.cloud.alipay.com/v1alpha1/changepod_types.go
 [ChangeModel]:https://traas-stack.github.io/altershield-docs/zh-CN/open-change-management-specification/change-model/
 [Pod]:https://kubernetes.io/docs/concepts/workloads/pods/
-[Operator-SKD]:https://sdk.operatorframework.io/
+[Operator-SDK]:https://sdk.operatorframework.io/
 [CRD]:https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/
 [Deployment]:https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
 [WebHook]:https://kubernetes.io/docs/reference/access-authn-authz/
