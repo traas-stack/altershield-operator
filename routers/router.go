@@ -1,35 +1,35 @@
 package routers
 
 import (
+	metricprovider "github.com/traas-stack/altershield-operator/pkg/metric/provider"
 	"log"
 	"net/http"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/gin-gonic/gin"
-
-	"gitlab.alipay-inc.com/common_release/altershieldoperator/controllers/callback"
-	opscloudclient "gitlab.alipay-inc.com/common_release/altershieldoperator/controllers/client"
 )
 
-func SetupRouter() *gin.Engine {
+func SetupRouter(apiClient client.Client, p metricprovider.Interface) *gin.Engine {
 	r := gin.Default()
 	r.Use(Cors())
-	altershieldOpenapi := r.Group("/openapi/altershield")
-	{
-		altershieldOpenapi.POST("/callback", callback.CheckCallBackHandler)
-		altershieldOpenapi.POST("/liveTest", callback.LiveTest)
+	altershieldOpenapi := r.Group("/openapi")
 
-		altershieldOpenapi.GET("/suspend/deployment", callback.GetSuspendDeployment)
-		altershieldOpenapi.PUT("/deployment/rollback", callback.DeploymentRollback)
+	callbackHandler := &CallbackHandler{
+		Client: apiClient,
 	}
+	metricHandler := &MetricHandler{
+		metricProvider: p,
+	}
+	altershieldOpenapi.POST("/callback", callbackHandler.CheckCallBackHandler)
+	altershieldOpenapi.POST("/liveTest", LiveTest)
 
-	// TODO delete
-	altershieldClientweb := r.Group("/altershield/client")
-	{
-		altershieldClientweb.POST("/submitChangeExecOrderWeb", opscloudclient.SubmitChangeExecOrderWeb)
-		altershieldClientweb.POST("/submitChangeStartNotifyWeb", opscloudclient.SubmitChangeStartNotifyWeb)
-		altershieldClientweb.POST("/submitChangeFinishNotifyWeb", opscloudclient.SubmitChangeFinishNotifyWeb)
-	}
+	altershieldOpenapi.POST("/metric/query", metricHandler.Query)
+
 	return r
+}
+
+func LiveTest(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "Hello world"})
 }
 
 func Cors() gin.HandlerFunc {

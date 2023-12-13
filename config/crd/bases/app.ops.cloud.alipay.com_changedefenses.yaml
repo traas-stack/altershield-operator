@@ -1,0 +1,119 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.10.0
+  creationTimestamp: null
+  name: changedefenses.app.ops.cloud.alipay.com
+spec:
+  group: app.ops.cloud.alipay.com
+  names:
+    kind: ChangeDefense
+    listKind: ChangeDefenseList
+    plural: changedefenses
+    singular: changedefense
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ChangeDefense is the Schema for the changedefenses API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ChangeDefenseSpec defines the desired state of ChangeDefense
+            properties:
+              defenseStrategy:
+                description: DefenseStrategy indicates the defense strategy on targeted
+                  resource changes
+                properties:
+                  workload:
+                    description: Workload indicates the defense strategy on targeted
+                      workload changes
+                    properties:
+                      steps:
+                        description: Steps define the order of phases to execute defense
+                          in batches(e.g. 20%, 40%, 60%, 80%, 100%)
+                        items:
+                          properties:
+                            checkAfterComplete:
+                              format: int32
+                              type: integer
+                            partition:
+                              anyOf:
+                              - type: integer
+                              - type: string
+                              x-kubernetes-int-or-string: true
+                          required:
+                          - partition
+                          type: object
+                        type: array
+                    required:
+                    - steps
+                    type: object
+                type: object
+              riskPolicy:
+                description: RiskPolicy indicates what to do on risks discovered by
+                  defense strategy
+                type: object
+              target:
+                description: Target indicates the resource that needs change defense
+                properties:
+                  objectRef:
+                    description: ObjectRef references the targeted kubernetes object
+                    properties:
+                      apiVersion:
+                        description: API Version of the referent
+                        type: string
+                      kind:
+                        description: Kind of the referent
+                        type: string
+                      name:
+                        description: Name of the referent
+                        type: string
+                    required:
+                    - apiVersion
+                    - kind
+                    - name
+                    type: object
+                  type:
+                    description: Type of change resource target
+                    type: string
+                required:
+                - objectRef
+                - type
+                type: object
+            required:
+            - defenseStrategy
+            - target
+            type: object
+          status:
+            description: ChangeDefenseStatus defines the observed state of ChangeDefense
+            properties:
+              currentExecutionID:
+                description: 'INSERT ADDITIONAL STATUS FIELD - define observed state
+                  of cluster Important: Run "make" to regenerate code after modifying
+                  this file'
+                type: string
+              phase:
+                type: string
+              verdict:
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

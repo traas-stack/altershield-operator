@@ -1,0 +1,31 @@
+# permissions for end users to edit changedefenses.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: changedefense-editor-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: altershieldoperator
+    app.kubernetes.io/part-of: altershieldoperator
+    app.kubernetes.io/managed-by: kustomize
+  name: changedefense-editor-role
+rules:
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changedefenses
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changedefenses/status
+  verbs:
+  - get

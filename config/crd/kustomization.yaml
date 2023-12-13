@@ -5,6 +5,8 @@ resources:
 - bases/app.ops.cloud.alipay.com_opsconfiginfoes.yaml
 - bases/app.ops.cloud.alipay.com_changeworkloads.yaml
 - bases/app.ops.cloud.alipay.com_changepods.yaml
+- bases/app.ops.cloud.alipay.com_changedefenses.yaml
+- bases/app.ops.cloud.alipay.com_changedefenseexecutions.yaml
 #+kubebuilder:scaffold:crdkustomizeresource
 
 patchesStrategicMerge:
@@ -13,6 +15,8 @@ patchesStrategicMerge:
 #- patches/webhook_in_opsconfiginfoes.yaml
 #- patches/webhook_in_changeworkloads.yaml
 #- patches/webhook_in_changepods.yaml
+#- patches/webhook_in_changedefenses.yaml
+#- patches/webhook_in_changedefenseexecutions.yaml
 #+kubebuilder:scaffold:crdkustomizewebhookpatch
 
 # [CERTMANAGER] To enable cert-manager, uncomment all the sections with [CERTMANAGER] prefix.
@@ -20,6 +24,8 @@ patchesStrategicMerge:
 #- patches/cainjection_in_opsconfiginfoes.yaml
 #- patches/cainjection_in_changeworkloads.yaml
 #- patches/cainjection_in_changepods.yaml
+#- patches/cainjection_in_changedefenses.yaml
+#- patches/cainjection_in_changedefenseexecutions.yaml
 #+kubebuilder:scaffold:crdkustomizecainjectionpatch
 
 # the following config is for teaching kustomize how to do kustomization for CRDs.

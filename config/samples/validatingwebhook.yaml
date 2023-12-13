@@ -1,22 +1,20 @@
 apiVersion: admissionregistration.k8s.io/v1beta1
 kind: ValidatingWebhookConfiguration
 metadata:
-  name: altershieldoperator-validation-webhook
-  labels:
-    control-plane: controller-manager
+  name: altershield-validation-webhook
 webhooks:
-  - name: altershieldoperator-validation.antgroup.com
+  - name: core-v1.validating.altershield
     clientConfig:
       service:
-        name: altershieldoperator-webhook-svc
-        namespace: altershieldoperator-system
-        path: "/deployment-validate"
-      caBundle: ${CA_BUNDLE}
+        name: altershield-svc
+        namespace: altershield
+        path: "/validate"
+        port: 443
+      caBundle: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNxRENDQVpBQ0NRQ2s1amxyK28yQWlUQU5CZ2txaGtpRzl3MEJBUXNGQURBV01SUXdFZ1lEVlFRRERBdGgKYkhSbGNuTm9hV1ZzWkRBZUZ3MHlNekV5TURVd05qRTNNVFJhRncwek16RXlNREl3TmpFM01UUmFNQll4RkRBUwpCZ05WQkFNTUMyRnNkR1Z5YzJocFpXeGtNSUlCSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DQVE4QU1JSUJDZ0tDCkFRRUE0SG9oWjV0Z2hlYWxHV1NBQ1pvcGVkVW4ycm5jSHN5aERpZEt0dGd4UHFRUlc5Z3JQbU1uc1hMaGtwWWwKOGEyZU9acjA4OHlVS0orODdXT0xSVVAyQzhackY1Vmx3V1hJNk9MWUhSK05lR2ZoYnNiMVBHOGZnc3ZJaVRUWQorcm40RXpPUS8wbWFXTU00S2ZwYVpnM1VJOW1DR0tEUng3ZWkzWjNVZGNKK3lxS3Ewd0hBak5hNXdUcXkzWVBiCjZTeUs5WWY4cklkTk5BUXNXUjRZMVRXOWVJTHgzaVZqN3Q2N0lQUmEzSk5HcVpJYlpQVEJFZFAvVFRYNmFPaVgKOWlsSkZmcjFzRFB2OWV2R0VGNzFyNXBId2sySVZVVDNSS2xJWkc2TTZXeGhNWWJsa21OaXU3SlVQeTc4QkFKSApwWW1HMDNUaGQzaS9nZ2xRR2c4R3F5Nm9jUUlEQVFBQk1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQVhxeFc2CkJVYnJTYnlsMjFXV0tGRGIrZDAzdHpLblc1aERSdjlNc2lXOEFlZVFiaVIzU2NmTUkzVG5WLzgyYk9wVWQ0ZnIKM2FldjN2Q0V2ZXFSeE43SFhKVXROQ1VCWHJDbUJuMjkrUlVSU1Uxd1FnNnQ5cVB6RDd6V29naDBzQTIrTE1PUgpuNWNsUVRndi9SY0JpVm1ZeTl4VzJnZ1B3cUxRNzBzbVErdmZQSlZzbk8zTXZIdHhuNE15aE1WN0h0RGF5UkJoCktpU1RIMG0reU8yNFdyZWxORDM0OW5lcDV6b1Azc2N2TWJwRzJMWnRuenJZaEx5NlJRdDlmSVNWWkhNdWpnMGoKN0hOczJhK0VhTXFINzRMMFBzeVNZcHk1K2t4djdYSmREWWtzaFlMdUtZbDdqR2hZbTg1KzE4Y28xVmVRbkZkQgplSEVUcHhUdlhjczJpSjdECi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
+    failurePolicy: Fail
     rules:
-      - operations: [ "CREATE", "UPDATE" ]
-        apiGroups: ["apps", ""]
-        apiVersions: ["v1"]
-        resources: ["deployments"]
-    namespaceSelector:
-      matchLabels:
-        admission-webhook-example: enabled
+      - apiGroups: [ "" ]
+        apiVersions: [ "v1" ]
+        operations: [ "DELETE" ]
+        resources: [ "pods" ]
+
