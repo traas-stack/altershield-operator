@@ -23,3 +23,8 @@ Dockerfile.cross
 *.swp
 *.swo
 *~
+
+# macOS paraphernalia
+.DS_Store
+
+bin/*

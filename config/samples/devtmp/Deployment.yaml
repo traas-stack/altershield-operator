@@ -768,8 +768,8 @@ metadata:
     app.kubernetes.io/name: deployment
     app.kubernetes.io/part-of: altershieldoperator
     control-plane: controller-manager
-  name: altershieldoperator-controller-manager
-  namespace: altershieldoperator-system
+  name: altershield-operator
+  namespace: altershield
 spec:
   replicas: 1
   selector:
@@ -809,6 +809,10 @@ spec:
         ports:
         - containerPort: 8443
           name: https
+          protocol: TCP
+        - containerPort: 9898
+          hostPort: 9898
+          name: webhook-port
           protocol: TCP
         resources:
           limits:
@@ -864,7 +868,7 @@ spec:
           readOnly: true
       securityContext:
         runAsNonRoot: true
-      serviceAccountName: altershieldoperator-controller-manager
+      serviceAccountName: altershield
       terminationGracePeriodSeconds: 10
       volumes:
       - name: cert

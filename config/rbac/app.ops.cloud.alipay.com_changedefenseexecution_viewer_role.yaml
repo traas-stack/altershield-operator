@@ -1,0 +1,27 @@
+# permissions for end users to view changedefenseexecutions.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: changedefenseexecution-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: altershieldoperator
+    app.kubernetes.io/part-of: altershieldoperator
+    app.kubernetes.io/managed-by: kustomize
+  name: changedefenseexecution-viewer-role
+rules:
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changedefenseexecutions
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changedefenseexecutions/status
+  verbs:
+  - get
