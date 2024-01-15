@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: altershield-webhook
+  namespace: altershield
+spec:
+  ports:
+    - name: webhook-port
+      protocol: TCP
+      port: 443
+      targetPort: webhook-port
+  type: ClusterIP
+  selector:
+    control-plane: altershield-operator
+  sessionAffinity: None

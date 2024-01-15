@@ -1,0 +1,12 @@
+apiVersion: app.ops.cloud.alipay.com/v1alpha1
+kind: ChangePod
+metadata:
+  labels:
+    app.kubernetes.io/name: changepod
+    app.kubernetes.io/instance: changepod-sample
+    app.kubernetes.io/part-of: altershieldoperator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: altershieldoperator
+  name: changepod-sample
+spec:
+  # TODO(user): Add fields here

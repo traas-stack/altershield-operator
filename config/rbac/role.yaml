@@ -1,0 +1,59 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: manager-role
+rules:
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changedefenseexecutions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changedefenseexecutions/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changedefenseexecutions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changedefenses
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changedefenses/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changedefenses/status
+  verbs:
+  - get
+  - patch
+  - update

@@ -1,0 +1,100 @@
+layout:
+- go.kubebuilder.io/v3
+multigroup: true
+plugins:
+  manifests.sdk.operatorframework.io/v2: {}
+  scorecard.sdk.operatorframework.io/v2: {}
+projectName: altershieldoperator
+repo: github.com/traas-stack/altershield-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: ops.cloud.alipay.com
+  group: app
+  kind: OpsCheckRecord
+  path: github.com/traas-stack/altershield-operator/api/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: ops.cloud.alipay.com
+  group: app
+  kind: OpsConfigInfo
+  path: github.com/traas-stack/altershield-operator/api/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: ops.cloud.alipay.com
+  group: app
+  kind: OpsCheckOrder
+  path: github.com/traas-stack/altershield-operator/api/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: ops.cloud.alipay.com
+  group: app
+  kind: ExeOrder
+  path: github.com/traas-stack/altershield-operator/api/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: ops.cloud.alipay.com
+  group: app
+  kind: ExeNode
+  path: github.com/traas-stack/altershield-operator/api/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: ops.cloud.alipay.com
+  group: app
+  kind: ChangeWorkload
+  path: github.com/traas-stack/altershield-operator/api/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: ops.cloud.alipay.com
+  group: app
+  kind: ChangePod
+  path: github.com/traas-stack/altershield-operator/api/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  group: apps
+  kind: Deployment
+  path: github.com/traas-stack/altershield-operator/apis/apps/v1
+  version: v1
+  webhooks:
+    defaulting: true
+    validation: true
+    webhookVersion: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  group: app.ops.cloud.alipay.com
+  kind: ChangeDefense
+  path: github.com/traas-stack/altershield-operator/apis/app.ops.cloud.alipay.com/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  group: app.ops.cloud.alipay.com
+  kind: ChangeDefenseExecution
+  path: github.com/traas-stack/altershield-operator/apis/app.ops.cloud.alipay.com/v1alpha1
+  version: v1alpha1
+version: "3"

@@ -1,0 +1,27 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: altershield-mutating-webhook
+webhooks:
+  - name: apps-v1.mutating.altershield
+    admissionReviewVersions: ["v1beta1", "v1"]
+    clientConfig:
+      service:
+        name: altershield-svc
+        namespace: altershield
+        path: "/mutate"
+        port: 443
+      caBundle: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNxRENDQVpBQ0NRQ1pPQ2JBeEpXaWhqQU5CZ2txaGtpRzl3MEJBUXNGQURBV01SUXdFZ1lEVlFRRERBdGgKYkhSbGNuTm9hV1ZzWkRBZUZ3MHlNekV5TVRrd016STNNekphRncwek16RXlNVFl3TXpJM016SmFNQll4RkRBUwpCZ05WQkFNTUMyRnNkR1Z5YzJocFpXeGtNSUlCSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DQVE4QU1JSUJDZ0tDCkFRRUEweEhPL3lmZFBTSGY5MHlCY01pNEdoakNRbzc1U0ZjZHd1UW1HNHJvT3Bsb1dmUEoybTNaN1lXaXk5dlMKRVlIeFRRZkM2YWlQUXlGcWZFaWZSaSsyYnlKUHNsQzRRVW9wcHhYZVlIcjJOVkd0N29Dc3FURjlQS1dzKzZNUQpPYm1YTVVQZXdTdU1MbUh6YmN2OHhWM3k3dUc3K2l3UGNxVnpHR2xuQ1VLU2VMcGIzNFY0QjEvMzFUQ1dib3RSCm94Mjg3eDVnaGNJUFYxRmY3UGFoeHh0eUV6YXJoNy9URU5naDB2TnFpbzVEYUxKM3RxSklxU25ZRTg5bklZdmgKamJJV2c5OGNwQ3JJdTNtVnc3VFhJRlZ4WWhmVUcvRSt2bXhINGd4eDR4aWd3MTUrT3MyVVEvMG10alZzb0xjYgpyeVBXS1FNK0t4MUFQRHowZnBXcnJxS3FmUUlEQVFBQk1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQTVGa1YyCkNBaTZaWVpacWY4eG1pOHQ3UUh1ejUrYzFjdFV1cU43U01zRDJ4UTdlQ0VJMWtvUnZKQ3hGay9sSFVNbjhEdXUKK0swQzdLQ1dTSmNrSjA1ZmVIOFNGYm5TODl0Mm5IMGJCSXo4ODFQS2lxMFNXdjMxclpHLzhjY0RaYnYrQUtMYgpRenFYTmEyUDUwTW9mcG9ZYURFTjFIWHpwQ0JaWGRFOG40LzlGYjMrQVh6NW10YkE1a21PZ1ZRbFVLc1VTRlliCkdMZDJCcDdHalNoRGVRazJ4UkZDSk5YU0dIWFBKQ2xGaTVpV2EyZGdCcFZRSkxBSzBVOURYeEhxeE1jVkhWMTYKWlp6K0txL1ZrenloSS93bCsrTUpFUG5QQkJSS3YxUlMxaTdqb3FXVkNsVzJzSytidmszN21PeDFMblFwR0pVegpncDVoY2Fmd0JmT0pabzhmCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
+    failurePolicy: Fail
+    rules:
+      - operations: ["UPDATE"]
+        apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        resources: ["deployments","statefulsets"]
+    sideEffects: None
+    namespaceSelector:
+      matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: In
+          values:
+            - as-test

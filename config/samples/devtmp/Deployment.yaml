@@ -1,0 +1,982 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    app.kubernetes.io/component: manager
+    app.kubernetes.io/created-by: altershieldoperator
+    app.kubernetes.io/instance: system
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: namespace
+    app.kubernetes.io/part-of: altershieldoperator
+    control-plane: controller-manager
+  name: altershieldoperator-system
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.10.0
+  creationTimestamp: null
+  name: changepods.app.ops.cloud.alipay.com
+spec:
+  group: app.ops.cloud.alipay.com
+  names:
+    kind: ChangePod
+    listKind: ChangePodList
+    plural: changepods
+    singular: changepod
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - description: The status of the changepod
+      jsonPath: .status.status
+      name: Status
+      type: string
+    - description: The message of the changepod
+      jsonPath: .status.message
+      name: Message
+      type: string
+    - description: The create time of the changepod
+      jsonPath: .spec.createTime
+      name: CreateTime
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ChangePod is the Schema for the changepods API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ChangePodSpec defines the desired state of ChangePod
+            properties:
+              changeWorkloadId:
+                type: string
+              createTime:
+                type: string
+              createTimeUnix:
+                format: int64
+                type: integer
+              podInfos:
+                items:
+                  properties:
+                    app:
+                      type: string
+                    hostName:
+                      type: string
+                    ip:
+                      type: string
+                    message:
+                      type: string
+                    namespace:
+                      type: string
+                    pod:
+                      type: string
+                    verdict:
+                      type: string
+                    workSpace:
+                      type: string
+                  required:
+                  - app
+                  - hostName
+                  - ip
+                  - namespace
+                  - pod
+                  - workSpace
+                  type: object
+                type: array
+            required:
+            - changeWorkloadId
+            - createTime
+            - createTimeUnix
+            - podInfos
+            type: object
+          status:
+            description: ChangePodStatus defines the observed state of ChangePod
+            properties:
+              changePodId:
+                type: string
+              message:
+                type: string
+              podResults:
+                items:
+                  properties:
+                    app:
+                      type: string
+                    hostName:
+                      type: string
+                    ip:
+                      type: string
+                    message:
+                      type: string
+                    namespace:
+                      type: string
+                    pod:
+                      type: string
+                    verdict:
+                      type: string
+                    workSpace:
+                      type: string
+                  required:
+                  - app
+                  - hostName
+                  - ip
+                  - namespace
+                  - pod
+                  - workSpace
+                  type: object
+                type: array
+              postSubmitTime:
+                type: string
+              postSubmitTimeUnix:
+                format: int64
+                type: integer
+              postTimeOutThreshold:
+                type: integer
+              preSubmitTime:
+                type: string
+              preSubmitTimeUnix:
+                format: int64
+                type: integer
+              preTimeoutThreshold:
+                type: integer
+              status:
+                description: 'INSERT ADDITIONAL STATUS FIELD - define observed state of cluster Important: Run "make" to regenerate code after modifying this file'
+                type: string
+              updateTime:
+                type: string
+              updateTimeUnix:
+                format: int64
+                type: integer
+            required:
+            - status
+            - updateTime
+            - updateTimeUnix
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.10.0
+  creationTimestamp: null
+  name: changeworkloads.app.ops.cloud.alipay.com
+spec:
+  group: app.ops.cloud.alipay.com
+  names:
+    kind: ChangeWorkload
+    listKind: ChangeWorkloadList
+    plural: changeworkloads
+    singular: changeworkload
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - description: The status of the changeworkload
+      jsonPath: .status.status
+      name: Status
+      type: string
+    - description: The create time of the changeworkload
+      jsonPath: .spec.createTime
+      name: CreateTime
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ChangeWorkload is the Schema for the changeworkloads API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ChangeWorkloadSpec defines the desired state of ChangeWorkload
+            properties:
+              appName:
+                type: string
+              changeWorkloadId:
+                type: string
+              countThreshold:
+                type: integer
+              createTime:
+                type: string
+              createTimeUnix:
+                format: int64
+                type: integer
+              policies:
+                items:
+                  type: object
+                type: array
+              reversion:
+                type: string
+              serviceName:
+                type: string
+              waitTimeThreshold:
+                type: integer
+            required:
+            - appName
+            - changeWorkloadId
+            - countThreshold
+            - createTime
+            - createTimeUnix
+            - reversion
+            - serviceName
+            - waitTimeThreshold
+            type: object
+          status:
+            description: ChangeWorkloadStatus defines the observed state of ChangeWorkload
+            properties:
+              defenseCheckFailPods:
+                items:
+                  properties:
+                    app:
+                      type: string
+                    hostName:
+                      type: string
+                    ip:
+                      type: string
+                    message:
+                      type: string
+                    namespace:
+                      type: string
+                    pod:
+                      type: string
+                    verdict:
+                      type: string
+                    workSpace:
+                      type: string
+                  required:
+                  - app
+                  - hostName
+                  - ip
+                  - namespace
+                  - pod
+                  - workSpace
+                  type: object
+                type: array
+              defenseCheckPassPods:
+                items:
+                  properties:
+                    app:
+                      type: string
+                    hostName:
+                      type: string
+                    ip:
+                      type: string
+                    message:
+                      type: string
+                    namespace:
+                      type: string
+                    pod:
+                      type: string
+                    verdict:
+                      type: string
+                    workSpace:
+                      type: string
+                  required:
+                  - app
+                  - hostName
+                  - ip
+                  - namespace
+                  - pod
+                  - workSpace
+                  type: object
+                type: array
+              defenseCheckingPods:
+                items:
+                  properties:
+                    app:
+                      type: string
+                    hostName:
+                      type: string
+                    ip:
+                      type: string
+                    message:
+                      type: string
+                    namespace:
+                      type: string
+                    pod:
+                      type: string
+                    verdict:
+                      type: string
+                    workSpace:
+                      type: string
+                  required:
+                  - app
+                  - hostName
+                  - ip
+                  - namespace
+                  - pod
+                  - workSpace
+                  type: object
+                type: array
+              defensePreparingPods:
+                description: 'INSERT ADDITIONAL STATUS FIELD - define observed state of cluster Important: Run "make" to regenerate code after modifying this file'
+                items:
+                  properties:
+                    app:
+                      type: string
+                    hostName:
+                      type: string
+                    ip:
+                      type: string
+                    message:
+                      type: string
+                    namespace:
+                      type: string
+                    pod:
+                      type: string
+                    verdict:
+                      type: string
+                    workSpace:
+                      type: string
+                  required:
+                  - app
+                  - hostName
+                  - ip
+                  - namespace
+                  - pod
+                  - workSpace
+                  type: object
+                type: array
+              entryTime:
+                type: string
+              entryTimeUnix:
+                format: int64
+                type: integer
+              status:
+                type: string
+              updateTime:
+                type: string
+              updateTimeUnix:
+                format: int64
+                type: integer
+            required:
+            - status
+            - updateTime
+            - updateTimeUnix
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.10.0
+  creationTimestamp: null
+  name: opsconfiginfoes.app.ops.cloud.alipay.com
+spec:
+  group: app.ops.cloud.alipay.com
+  names:
+    kind: OpsConfigInfo
+    listKind: OpsConfigInfoList
+    plural: opsconfiginfoes
+    singular: opsconfiginfo
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: OpsConfigInfo is the Schema for the opsconfiginfoes API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: OpsConfigInfoSpec defines the desired state of OpsConfigInfo
+            properties:
+              content:
+                type: string
+              enable:
+                type: boolean
+              remark:
+                type: string
+              type:
+                type: string
+            required:
+            - enable
+            - type
+            type: object
+          status:
+            description: OpsConfigInfoStatus defines the observed state of OpsConfigInfo
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: altershieldoperator
+    app.kubernetes.io/instance: controller-manager
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: serviceaccount
+    app.kubernetes.io/part-of: altershieldoperator
+  name: altershieldoperator-controller-manager
+  namespace: altershieldoperator-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: altershieldoperator
+    app.kubernetes.io/instance: leader-election-role
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: role
+    app.kubernetes.io/part-of: altershieldoperator
+  name: altershieldoperator-leader-election-role
+  namespace: altershieldoperator-system
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: altershieldoperator-manager-role
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changepods
+  verbs:
+  - create
+  - delete
+  - deletecollection
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changepods/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changepods/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changeworkloads
+  verbs:
+  - create
+  - delete
+  - deletecollection
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changeworkloads/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - changeworkloads/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - opsconfiginfoes
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - opsconfiginfoes/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - app.ops.cloud.alipay.com
+  resources:
+  - opsconfiginfoes/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apps
+  resources:
+  - replicasets
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/component: kube-rbac-proxy
+    app.kubernetes.io/created-by: altershieldoperator
+    app.kubernetes.io/instance: metrics-reader
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/part-of: altershieldoperator
+  name: altershieldoperator-metrics-reader
+rules:
+- nonResourceURLs:
+  - /metrics
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/component: kube-rbac-proxy
+    app.kubernetes.io/created-by: altershieldoperator
+    app.kubernetes.io/instance: proxy-role
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/part-of: altershieldoperator
+  name: altershieldoperator-proxy-role
+rules:
+- apiGroups:
+  - authentication.k8s.io
+  resources:
+  - tokenreviews
+  verbs:
+  - create
+- apiGroups:
+  - authorization.k8s.io
+  resources:
+  - subjectaccessreviews
+  verbs:
+  - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: altershieldoperator
+    app.kubernetes.io/instance: leader-election-rolebinding
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: rolebinding
+    app.kubernetes.io/part-of: altershieldoperator
+  name: altershieldoperator-leader-election-rolebinding
+  namespace: altershieldoperator-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: altershieldoperator-leader-election-role
+subjects:
+- kind: ServiceAccount
+  name: altershieldoperator-controller-manager
+  namespace: altershieldoperator-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: altershieldoperator
+    app.kubernetes.io/instance: manager-rolebinding
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: clusterrolebinding
+    app.kubernetes.io/part-of: altershieldoperator
+  name: altershieldoperator-manager-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: altershieldoperator-manager-role
+subjects:
+- kind: ServiceAccount
+  name: altershieldoperator-controller-manager
+  namespace: altershieldoperator-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: kube-rbac-proxy
+    app.kubernetes.io/created-by: altershieldoperator
+    app.kubernetes.io/instance: proxy-rolebinding
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: clusterrolebinding
+    app.kubernetes.io/part-of: altershieldoperator
+  name: altershieldoperator-proxy-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: altershieldoperator-proxy-role
+subjects:
+- kind: ServiceAccount
+  name: altershieldoperator-controller-manager
+  namespace: altershieldoperator-system
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: kube-rbac-proxy
+    app.kubernetes.io/created-by: altershieldoperator
+    app.kubernetes.io/instance: controller-manager-metrics-service
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: service
+    app.kubernetes.io/part-of: altershieldoperator
+    control-plane: controller-manager
+  name: altershieldoperator-controller-manager-metrics-service
+  namespace: altershieldoperator-system
+spec:
+  ports:
+  - name: https
+    port: 8443
+    protocol: TCP
+    targetPort: https
+  selector:
+    control-plane: controller-manager
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: webhook
+    app.kubernetes.io/created-by: altershieldoperator
+    app.kubernetes.io/instance: webhook-service
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: service
+    app.kubernetes.io/part-of: altershieldoperator
+  name: altershieldoperator-webhook-service
+  namespace: altershieldoperator-system
+spec:
+  ports:
+  - port: 443
+    protocol: TCP
+    targetPort: 1443
+  selector:
+    control-plane: controller-manager
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: manager
+    app.kubernetes.io/created-by: altershieldoperator
+    app.kubernetes.io/instance: controller-manager
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: deployment
+    app.kubernetes.io/part-of: altershieldoperator
+    control-plane: controller-manager
+  name: altershield-operator
+  namespace: altershield
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      control-plane: controller-manager
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container: manager
+      labels:
+        control-plane: controller-manager
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
+                - arm64
+                - ppc64le
+                - s390x
+              - key: kubernetes.io/os
+                operator: In
+                values:
+                - linux
+      containers:
+      - args:
+        - --secure-listen-address=0.0.0.0:8443
+        - --upstream=http://127.0.0.1:8089/
+        - --logtostderr=true
+        - --v=0
+        image: gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0
+        name: kube-rbac-proxy
+        ports:
+        - containerPort: 8443
+          name: https
+          protocol: TCP
+        - containerPort: 9898
+          hostPort: 9898
+          name: webhook-port
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 500m
+            memory: 128Mi
+          requests:
+            cpu: 5m
+            memory: 64Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+      - args:
+        - --health-probe-bind-address=:8088
+        - --metrics-bind-address=127.0.0.1:8089
+        - --leader-elect
+        command:
+        - /manager
+        image: controller:latest
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8088
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        name: manager
+        ports:
+        - containerPort: 1443
+          name: webhook-server
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8088
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: 500m
+            memory: 128Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        volumeMounts:
+        - mountPath: /tmp/k8s-webhook-server/serving-certs
+          name: cert
+          readOnly: true
+      securityContext:
+        runAsNonRoot: true
+      serviceAccountName: altershield
+      terminationGracePeriodSeconds: 10
+      volumes:
+      - name: cert
+        secret:
+          defaultMode: 420
+          secretName: webhook-server-cert
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  labels:
+    app.kubernetes.io/component: certificate
+    app.kubernetes.io/created-by: altershieldoperator
+    app.kubernetes.io/instance: serving-cert
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: certificate
+    app.kubernetes.io/part-of: altershieldoperator
+  name: altershieldoperator-serving-cert
+  namespace: altershieldoperator-system
+spec:
+  ipAddresses:
+  - '{IP_Address}'
+  issuerRef:
+    kind: Issuer
+    name: altershieldoperator-selfsigned-issuer
+  secretName: webhook-server-cert
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  labels:
+    app.kubernetes.io/component: certificate
+    app.kubernetes.io/created-by: altershieldoperator
+    app.kubernetes.io/instance: selfsigned-issuer
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: issuer
+    app.kubernetes.io/part-of: altershieldoperator
+  name: altershieldoperator-selfsigned-issuer
+  namespace: altershieldoperator-system
+spec:
+  selfSigned: {}
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  annotations:
+    cert-manager.io/inject-ca-from: altershieldoperator-system/altershieldoperator-serving-cert
+  labels:
+    app.kubernetes.io/component: webhook
+    app.kubernetes.io/created-by: altershieldoperator
+    app.kubernetes.io/instance: mutating-webhook-configuration
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: mutatingwebhookconfiguration
+    app.kubernetes.io/part-of: altershieldoperator
+  name: altershieldoperator-mutating-webhook-configuration
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    url: https://{IP_Address}:1443/mutate-apps-v1-deployment
+  failurePolicy: Fail
+  name: mdeployment.kb.io
+  namespaceSelector:
+    matchLabels:
+      admission-webhook-altershield: enabled
+  rules:
+  - apiGroups:
+    - apps
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - deployments
+  sideEffects: None
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  annotations:
+    cert-manager.io/inject-ca-from: altershieldoperator-system/altershieldoperator-serving-cert
+  labels:
+    app.kubernetes.io/component: webhook
+    app.kubernetes.io/created-by: altershieldoperator
+    app.kubernetes.io/instance: validating-webhook-configuration
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: validatingwebhookconfiguration
+    app.kubernetes.io/part-of: altershieldoperator
+  name: altershieldoperator-validating-webhook-configuration
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    url: https://{IP_Address}:1443/validate-apps-v1-deployment
+  failurePolicy: Fail
+  name: vdeployment.kb.io
+  namespaceSelector:
+    matchLabels:
+      admission-webhook-altershield: enabled
+  rules:
+  - apiGroups:
+    - apps
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - deployments
+  sideEffects: None
